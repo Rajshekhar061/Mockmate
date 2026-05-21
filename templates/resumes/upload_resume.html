@@ -1,0 +1,343 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Resume - CareerAI{% endblock %}
+
+{% block content %}
+
+<div class="container-lg py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <!-- Header -->
+      <div class="mb-5">
+        <h1 class="display-5 fw-bold mb-2">
+          <i class="fas fa-cloud-upload-alt me-3 text-primary"></i>
+          Upload Your Resume
+        </h1>
+        <p class="text-muted lead">
+          Get AI-powered analysis of your resume in seconds
+        </p>
+      </div>
+
+      <!-- Upload Card -->
+      <div class="card border-0 shadow-lg">
+        <div class="card-body p-5">
+          <form method="POST" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+
+            <!-- Upload Area -->
+            <div class="mb-4">
+              <div
+                class="upload-area border-2 border-dashed rounded-lg p-5 text-center"
+                style="
+                  cursor: pointer;
+                  transition: all 0.3s ease;
+                  border-color: #e5e7eb;
+                  background-color: #f9fafb;
+                "
+              >
+                <div class="mb-3">
+                  <i
+                    class="fas fa-file-pdf display-1"
+                    style="color: #ef4444"
+                  ></i>
+                </div>
+                <h5 class="fw-bold mb-2">Drag and drop your PDF here</h5>
+                <p class="text-muted mb-3">or click to select file</p>
+
+                {{ form.uploaded_file }}
+
+                <small class="text-muted">
+                  <i class="fas fa-info-circle me-1"></i>
+                  PDF files only • Max 5MB • Text-based PDFs only
+                </small>
+              </div>
+              {% if form.uploaded_file.errors %}
+              <div class="alert alert-danger mt-3">
+                {{ form.uploaded_file.errors.0 }}
+              </div>
+              {% endif %}
+              
+            </div>
+
+            <!-- Features -->
+            <div class="row mb-4">
+              <div class="col-md-6 mb-3">
+                <div class="d-flex">
+                  <div class="text-success me-3" style="font-size: 1.5rem">
+                    <i class="fas fa-check-circle"></i>
+                  </div>
+                  <div>
+                    <h6 class="fw-bold">ATS Score</h6>
+                    <small class="text-muted"
+                      >See how your resume ranks with applicant tracking
+                      systems</small
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="d-flex">
+                  <div class="text-success me-3" style="font-size: 1.5rem">
+                    <i class="fas fa-check-circle"></i>
+                  </div>
+                  <div>
+                    <h6 class="fw-bold">AI Feedback</h6>
+                    <small class="text-muted"
+                      >Get detailed insights powered by advanced AI
+                      analysis</small
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="d-flex">
+                  <div class="text-success me-3" style="font-size: 1.5rem">
+                    <i class="fas fa-check-circle"></i>
+                  </div>
+                  <div>
+                    <h6 class="fw-bold">Strengths & Weaknesses</h6>
+                    <small class="text-muted"
+                      >Identify what works and what needs improvement</small
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="d-flex">
+                  <div class="text-success me-3" style="font-size: 1.5rem">
+                    <i class="fas fa-check-circle"></i>
+                  </div>
+                  <div>
+                    <h6 class="fw-bold">Actionable Tips</h6>
+                    <small class="text-muted"
+                      >Get specific recommendations to boost your ATS
+                      score</small
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="d-grid gap-2">
+              <button
+                type="submit"
+                class="btn btn-primary btn-lg"
+                id="submit-btn"
+              >
+                <i class="fas fa-bolt me-2"></i>
+                Analyze My Resume
+              </button>
+            </div>
+
+            <p class="text-center text-muted mt-3 small">
+              <i class="fas fa-lock me-1"></i>
+              Your resume is secure and only used for analysis. We never share
+              your data.
+            </p>
+          </form>
+        </div>
+      </div>
+
+      <!-- FAQ Section -->
+      <div class="mt-5">
+        <h3 class="fw-bold mb-4">Frequently Asked Questions</h3>
+
+        <div class="accordion" id="faqAccordion">
+          <div class="accordion-item border-0 mb-3 shadow-sm">
+            <h2 class="accordion-header">
+              <button
+                class="accordion-button"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#faq1"
+              >
+                <i class="fas fa-question-circle me-2 text-primary"></i>
+                What formats do you support?
+              </button>
+            </h2>
+            <div
+              id="faq1"
+              class="accordion-body"
+              data-bs-parent="#faqAccordion"
+            >
+              We currently support PDF files only. Please ensure your PDF is
+              text-based (not scanned images).
+            </div>
+          </div>
+
+          <div class="accordion-item border-0 mb-3 shadow-sm">
+            <h2 class="accordion-header">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#faq2"
+              >
+                <i class="fas fa-question-circle me-2 text-primary"></i>
+                Is my resume data private?
+              </button>
+            </h2>
+            <div
+              id="faq2"
+              class="accordion-body"
+              data-bs-parent="#faqAccordion"
+            >
+              Yes! Your resume is encrypted and stored securely. We never share
+              your data with third parties.
+            </div>
+          </div>
+
+          <div class="accordion-item border-0 mb-3 shadow-sm">
+            <h2 class="accordion-header">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#faq3"
+              >
+                <i class="fas fa-question-circle me-2 text-primary"></i>
+                How long does analysis take?
+              </button>
+            </h2>
+            <div
+              id="faq3"
+              class="accordion-body"
+              data-bs-parent="#faqAccordion"
+            >
+              Most resumes are analyzed within 10-30 seconds. Complex resumes
+              may take up to a minute.
+            </div>
+          </div>
+
+          <div class="accordion-item border-0 shadow-sm">
+            <h2 class="accordion-header">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#faq4"
+              >
+                <i class="fas fa-question-circle me-2 text-primary"></i>
+                Can I upload multiple resumes?
+              </button>
+            </h2>
+            <div
+              id="faq4"
+              class="accordion-body"
+              data-bs-parent="#faqAccordion"
+            >
+              Yes! You can upload and analyze as many resumes as you like. Track
+              different versions and improvements over time.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .upload-area {
+    transition: all 0.3s ease;
+  }
+
+  .upload-area:hover {
+    background-color: #f0f9ff !important;
+    border-color: #3b82f6 !important;
+  }
+
+  .upload-area.drag-over {
+    background-color: #eff6ff !important;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  #id_uploaded_file {
+    display: none;
+  }
+
+  .accordion-button:not(.collapsed) {
+    background-color: #f0f9ff;
+    color: #1e40af;
+  }
+
+  .accordion-button:focus {
+    box-shadow: none;
+    border-color: #3b82f6;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const uploadArea = document.querySelector(".upload-area");
+    const fileInput = document.getElementById("id_uploaded_file");
+
+    // Click to upload
+    uploadArea.addEventListener("click", function () {
+      fileInput.click();
+    });
+
+    // Drag and drop
+    uploadArea.addEventListener("dragover", function (e) {
+      e.preventDefault();
+      uploadArea.classList.add("drag-over");
+    });
+
+    uploadArea.addEventListener("dragleave", function (e) {
+      e.preventDefault();
+      uploadArea.classList.remove("drag-over");
+    });
+
+    uploadArea.addEventListener("drop", function (e) {
+      e.preventDefault();
+      uploadArea.classList.remove("drag-over");
+
+      const files = e.dataTransfer.files;
+      if (files.length > 0) {
+        fileInput.files = files;
+        // Update the form display
+        updateFileDisplay(files[0]);
+      }
+    });
+
+    // File input change
+    fileInput.addEventListener("change", function (e) {
+      if (this.files.length > 0) {
+        updateFileDisplay(this.files[0]);
+      }
+    });
+
+    function updateFileDisplay(file) {
+  const fileInfo = document.createElement("div");
+
+  fileInfo.innerHTML = `
+    <div class="mb-3 mt-3 text-center">
+      <i class="fas fa-file-pdf display-4" style="color: #10b981;"></i>
+      <h5 class="fw-bold mt-2">✓ File selected</h5>
+      <p class="text-muted mb-1">${file.name}</p>
+      <small class="text-muted">
+        ${(file.size / 1024).toFixed(2)} KB
+      </small>
+    </div>
+  `;
+
+  const oldInfo = document.querySelector(".file-info");
+  if (oldInfo) {
+    oldInfo.remove();
+  }
+
+  fileInfo.classList.add("file-info");
+  uploadArea.appendChild(fileInfo);
+}
+
+    // Add loading state to submit button
+    document.querySelector("form").addEventListener("submit", function () {
+      const submitBtn = document.getElementById("submit-btn");
+      submitBtn.disabled = true;
+      submitBtn.innerHTML =
+        '<i class="fas fa-spinner fa-spin me-2"></i>Analyzing...';
+    });
+  });
+</script>
+{% endblock %}

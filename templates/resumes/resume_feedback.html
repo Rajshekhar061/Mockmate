@@ -1,0 +1,374 @@
+{% extends "base.html" %}
+
+{% block title %}
+Resume Feedback - CareerAI
+{% endblock %}
+
+{% block content %}
+<div class="container-lg py-5">
+
+  {% if resume.status == 'failed' %}
+
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="fas fa-exclamation-circle me-2"></i>
+    <strong>Analysis Failed:</strong> {{ resume.error_message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+
+  <div class="text-center py-5">
+    <a href="{% url 'upload_resume' %}" class="btn btn-primary btn-lg">
+      <i class="fas fa-redo me-2"></i>
+      Try Another Resume
+    </a>
+  </div>
+
+  {% elif not resume.is_analyzed %}
+
+  <div class="alert alert-warning">
+    <i class="fas fa-hourglass-half me-2"></i>
+    Your resume is still being analyzed. Please refresh this page in a moment.
+  </div>
+
+  {% else %}
+
+  <!-- Header with ATS Score -->
+  <div class="row mb-5">
+    <div class="col-12">
+      <h1 class="display-5 fw-bold mb-3">
+        <i class="fas fa-chart-line me-3 text-primary"></i>
+        Resume Analysis Results
+      </h1>
+
+      <p class="text-muted">
+        {{ resume.original_filename }} • Analyzed on
+        {{ resume.analyzed_at|date:"M d, Y H:i" }}
+      </p>
+    </div>
+  </div>
+
+  <!-- ATS Score Card -->
+  <div class="row mb-5">
+    <div class="col-lg-4 mb-3">
+      <div class="card border-0 shadow-lg text-center">
+        <div class="card-body p-5">
+          <div class="position-relative d-inline-block mb-3">
+            <svg width="150" height="150" viewBox="0 0 150 150">
+              <circle
+                cx="75"
+                cy="75"
+                r="70"
+                fill="none"
+                stroke="#e5e7eb"
+                stroke-width="8"
+              />
+              <circle
+                cx="75"
+                cy="75"
+                r="70"
+                fill="none"
+                stroke="#3b82f6"
+                stroke-width="8"
+                stroke-dasharray="{% widthratio resume.ats_score 100 220 %} 220"
+                stroke-dashoffset="0"
+                style="
+                  transform: rotate(-90deg);
+                  transform-origin: 75px 75px;
+                  transition: stroke-dasharray 1s ease;
+                "
+              />
+            </svg>
+            <div
+              class="position-absolute top-50 start-50 translate-middle text-center"
+            >
+              <div class="display-6 fw-bold">{{ resume.ats_score }}%</div>
+              <small class="text-muted">ATS Score</small>
+            </div>
+          </div>
+
+          <h5 class="fw-bold mt-4">
+            {% if resume.ats_score >= 80 %}
+            <span class="badge bg-success">Excellent</span>
+            {% elif resume.ats_score >= 60 %}
+            <span class="badge bg-info">Good</span>
+            {% elif resume.ats_score >= 40 %}
+            <span class="badge bg-warning">Fair</span>
+            {% else %}
+            <span class="badge bg-danger">Needs Work</span>
+            {% endif %}
+          </h5>
+
+          <p class="text-muted mt-3 small">
+            {% if resume.ats_score >= 80 %} Your resume is well-optimized for
+            ATS systems and has strong formatting and keyword usage. {% elif
+            resume.ats_score >= 60 %} Your resume passes ATS screening but could
+            use some improvements in keywords and formatting. {% elif
+            resume.ats_score >= 40 %} Your resume needs significant improvements
+            to pass ATS screening effectively. {% else %} Your resume may
+            struggle with ATS systems. Follow the suggestions below for
+            improvements. {% endif %}
+          </p>
+
+          <div class="mt-4">
+            <a
+              href="{% url 'reanalyze_resume' resume.id %}"
+              class="btn btn-sm btn-outline-primary me-2"
+            >
+              <i class="fas fa-redo me-1"></i>
+              Reanalyze
+            </a>
+            <a
+              href="{% url 'upload_resume' %}"
+              class="btn btn-sm btn-outline-secondary"
+            >
+              <i class="fas fa-cloud-upload-alt me-1"></i>
+              New Resume
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="col-lg-8">
+      <div class="row mb-3">
+        <div class="col-md-6 mb-3">
+          <div class="card border-0 shadow-sm">
+            <div class="card-body">
+              <div class="text-success mb-2" style="font-size: 1.5rem">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <h6 class="card-title text-muted">Strengths Found</h6>
+              <p class="display-6 fw-bold">{{ strengths|length }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <div class="card border-0 shadow-sm">
+            <div class="card-body">
+              <div class="text-danger mb-2" style="font-size: 1.5rem">
+                <i class="fas fa-exclamation-circle"></i>
+              </div>
+              <h6 class="card-title text-muted">Weaknesses Found</h6>
+              <p class="display-6 fw-bold">{{ weaknesses|length }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <div class="card border-0 shadow-sm">
+            <div class="card-body">
+              <div class="text-warning mb-2" style="font-size: 1.5rem">
+                <i class="fas fa-lightbulb"></i>
+              </div>
+              <h6 class="card-title text-muted">Suggestions</h6>
+              <p class="display-6 fw-bold">{{ suggestions|length }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <div class="card border-0 shadow-sm">
+            <div class="card-body">
+              <div class="text-info mb-2" style="font-size: 1.5rem">
+                <i class="fas fa-tag"></i>
+              </div>
+              <h6 class="card-title text-muted">Keywords Found</h6>
+              <p class="display-6 fw-bold">
+                {{ resume.keywords_found|length }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Strengths Section -->
+  {% if strengths %}
+  <div class="mb-5">
+    <h3 class="fw-bold mb-4">
+      <i class="fas fa-star me-2 text-success"></i>
+      Strengths
+    </h3>
+    <div class="row">
+      {% for strength in strengths %}
+      <div class="col-md-6 mb-3">
+        <div class="card border-left-success border-0 shadow-sm h-100">
+          <div class="card-body">
+            <h6 class="fw-bold text-success mb-2">
+              <i class="fas fa-check-circle me-2"></i>
+              {{ strength.title }}
+            </h6>
+            <p class="text-muted small mb-0">{{ strength.description }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Weaknesses Section -->
+  {% if weaknesses %}
+  <div class="mb-5">
+    <h3 class="fw-bold mb-4">
+      <i class="fas fa-exclamation-triangle me-2 text-danger"></i>
+      Areas for Improvement
+    </h3>
+    <div class="row">
+      {% for weakness in weaknesses %}
+      <div class="col-md-6 mb-3">
+        <div class="card border-left-danger border-0 shadow-sm h-100">
+          <div class="card-body">
+            <h6 class="fw-bold text-danger mb-2">
+              <i class="fas fa-times-circle me-2"></i>
+              {{ weakness.title }}
+            </h6>
+            <p class="text-muted small mb-2">{{ weakness.description }}</p>
+            <span class="badge bg-danger">{{ weakness.severity }}</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Suggestions Section -->
+  {% if suggestions %}
+  <div class="mb-5">
+    <h3 class="fw-bold mb-4">
+      <i class="fas fa-lightbulb me-2 text-warning"></i>
+      Actionable Recommendations
+    </h3>
+    <div class="row">
+      {% for suggestion in suggestions %}
+      <div class="col-lg-12 mb-3">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start">
+              <div class="flex-grow-1">
+                <h6 class="fw-bold mb-2">
+                  <i class="fas fa-arrow-right me-2" style="color: #f59e0b"></i>
+                  {{ suggestion.title }}
+                </h6>
+                <p class="text-muted mb-2">{{ suggestion.action }}</p>
+                <small class="text-muted">
+                  Expected Impact:
+                  <strong>{{ suggestion.expected_impact }}</strong>
+                </small>
+              </div>
+              <span
+                class="badge bg-{% if suggestion.priority == 'high' %}danger{% elif suggestion.priority == 'medium' %}warning{% else %}info{% endif %} ms-3"
+              >
+                {{ suggestion.priority }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Keywords Section -->
+  {% if resume.keywords_found %}
+  <div class="mb-5">
+    <h3 class="fw-bold mb-4">
+      <i class="fas fa-tags me-2 text-info"></i>
+      Keywords Found in Your Resume
+    </h3>
+    <div class="card border-0 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex flex-wrap gap-2">
+          {% for keyword in resume.keywords_found %}
+          <span class="badge bg-info">{{ keyword }}</span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Next Steps -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <h3 class="fw-bold mb-4">Next Steps</h3>
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <div class="card border-0 shadow-sm text-center">
+            <div class="card-body">
+              <div class="display-5 text-primary mb-3">
+                <i class="fas fa-1"></i>
+              </div>
+              <h5 class="fw-bold">Make Changes</h5>
+              <p class="text-muted small">
+                Implement the recommendations above to improve your resume.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-3">
+          <div class="card border-0 shadow-sm text-center">
+            <div class="card-body">
+              <div class="display-5 text-success mb-3">
+                <i class="fas fa-2"></i>
+              </div>
+              <h5 class="fw-bold">Upload Again</h5>
+              <p class="text-muted small">
+                Upload your updated resume to see improvements in your ATS
+                score.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-3">
+          <div class="card border-0 shadow-sm text-center">
+            <div class="card-body">
+              <div class="display-5 text-info mb-3">
+                <i class="fas fa-3"></i>
+              </div>
+              <h5 class="fw-bold">Practice Interview</h5>
+              <p class="text-muted small">
+                Use your resume to practice mock interviews with AI feedback.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endif %}
+
+  <!-- Action Buttons -->
+  <div class="row mt-5">
+    <div class="col-12 d-flex gap-2 justify-content-center">
+      <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-2"></i>
+        Back to Dashboard
+      </a>
+      <a href="{% url 'upload_resume' %}" class="btn btn-primary">
+        <i class="fas fa-cloud-upload-alt me-2"></i>
+        Upload Another Resume
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .border-left-success {
+    border-left: 4px solid #10b981 !important;
+  }
+
+  .border-left-danger {
+    border-left: 4px solid #ef4444 !important;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  }
+</style>
+{% endblock %}

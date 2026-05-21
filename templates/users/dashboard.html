@@ -1,0 +1,407 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard - CareerAI
+{% endblock %}
+
+{% block content %}
+<div class="container-lg py-5">
+  <!-- Welcome Section -->
+  <div class="row mb-5">
+    <div class="col-lg-8">
+      <h1 class="display-6 fw-bold mb-2">
+        <i class="fas fa-tachometer-alt me-3 text-primary"></i>
+        Welcome, {{ user.first_name|default:user.username }}!
+      </h1>
+      <p class="text-muted lead">
+        Your AI-powered interview preparation dashboard
+      </p>
+    </div>
+    <div class="col-lg-4 d-flex align-items-center justify-content-end">
+      <a href="{% url 'upload_resume' %}" class="btn btn-primary btn-lg me-2">
+        <i class="fas fa-cloud-upload-alt me-2"></i>
+        Upload Resume
+      </a>
+      <a
+        href="{% url 'analytics_insights' %}"
+        class="btn btn-outline-secondary btn-lg"
+      >
+        <i class="fas fa-chart-line me-2"></i>
+        View Insights
+      </a>
+    </div>
+  </div>
+
+  <!-- Stats Section -->
+  <div class="row mb-5">
+    <div class="col-md-3 mb-3">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body text-center">
+          <div class="display-6 text-primary mb-2">
+            <i class="fas fa-file-pdf"></i>
+          </div>
+          <h6 class="card-title text-muted">Resumes Uploaded</h6>
+          <p class="display-5 fw-bold">{{ resume_count }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body text-center">
+          <div class="display-6 text-success mb-2">
+            <i class="fas fa-video"></i>
+          </div>
+          <h6 class="card-title text-muted">Practice Interviews</h6>
+          <p class="display-5 fw-bold">{{ interview_count|default:0 }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body text-center">
+          <div class="display-6 text-warning mb-2">
+            <i class="fas fa-award"></i>
+          </div>
+          <h6 class="card-title text-muted">Avg. Interview Score</h6>
+          <p class="display-5 fw-bold">
+            {% if interview_count > 0 %}{{ average_interview_score }}%{% else
+            %}-{% endif %}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body text-center">
+          <div class="display-6 text-info mb-2">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h6 class="card-title text-muted">Progress</h6>
+          <p class="display-5 fw-bold">{{ progress }}%</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-5">
+    <div class="col-xl-7">
+      <div class="card border-0 shadow-sm p-4 h-100">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div>
+            <h4 class="fw-bold mb-1">Personalized Interview Analytics</h4>
+            <p class="text-muted mb-0">
+              Track your progress, weak topics, and AI-suggested improvements at
+              a glance.
+            </p>
+          </div>
+          <span class="badge bg-secondary">Updated just now</span>
+        </div>
+
+        <div class="row gx-3 gy-3">
+          <div class="col-md-6">
+            <div class="border rounded p-3 bg-light">
+              <h6 class="text-muted mb-2">Score Trend</h6>
+              <p class="mb-0">{{ trend_summary }}</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="border rounded p-3 bg-light">
+              <h6 class="text-muted mb-2">AI Recommendations</h6>
+              {% if recommendations %}
+              <ul class="mb-0 ps-3">
+                {% for item in recommendations|slice:":3" %}
+                <li>{{ item }}</li>
+                {% endfor %}
+              </ul>
+              {% else %}
+              <p class="mb-0 text-muted">
+                AI recommendations will appear after practice sessions.
+              </p>
+              {% endif %}
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="border rounded p-3">
+              <h6 class="text-muted mb-3">Progress Plan</h6>
+              {% if improvement_areas %}
+              <div class="progress mb-3" style="height: 12px">
+                <div
+                  class="progress-bar bg-success"
+                  role="progressbar"
+                  style="width: {{ progress }}%;"
+                  aria-valuenow="{{ progress }}"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div>
+              <div class="row gy-2">
+                {% for area in improvement_areas|slice:":3" %}
+                <div class="col-12">
+                  <div class="small text-muted">• {{ area }}</div>
+                </div>
+                {% endfor %}
+              </div>
+              {% else %}
+              <p class="mb-0 text-muted">
+                Complete more interviews to unlock targeted improvement steps.
+              </p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-5">
+      <div class="row g-3">
+        <div class="col-12">
+          <div class="card border-0 shadow-sm p-4 h-100">
+            <h5 class="fw-bold mb-3">Top Weak Topics</h5>
+            {% if weak_topics %}
+            <ul class="list-group list-group-flush">
+              {% for topic in weak_topics|slice:":4" %}
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+              >
+                {{ topic.topic }}
+                <span class="badge bg-danger">{{ topic.average_score }}%</span>
+              </li>
+              {% endfor %}
+            </ul>
+            {% else %}
+            <p class="text-muted mb-0">
+              No weak topics identified yet. Start an interview to begin
+              analysis.
+            </p>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="card border-0 shadow-sm p-4 h-100">
+            <h5 class="fw-bold mb-3">Top Strong Topics</h5>
+            {% if strong_topics %}
+            <ul class="list-group list-group-flush">
+              {% for topic in strong_topics|slice:":4" %}
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+              >
+                {{ topic.topic }}
+                <span class="badge bg-success">{{ topic.average_score }}%</span>
+              </li>
+              {% endfor %}
+            </ul>
+            {% else %}
+            <p class="text-muted mb-0">
+              Your strengths will populate here after interview evaluation.
+            </p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Resumes Section -->
+  <div class="row">
+    <div class="col-12">
+      <h3 class="fw-bold mb-4">
+        <i class="fas fa-history me-2 text-primary"></i>
+        Recent Resume Analyses
+      </h3>
+
+      {% if resumes %}
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>File Name</th>
+              <th>Uploaded</th>
+              <th>ATS Score</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for resume in resumes %}
+            <tr>
+              <td>
+                <i class="fas fa-file-pdf text-danger me-2"></i>
+                {{ resume.uploaded_file.name|truncatechars:40 }}
+              </td>
+              <td>
+                <small class="text-muted">
+                  {{ resume.created_at|date:"M d, Y H:i" }}
+                </small>
+              </td>
+              <td>
+                {% if resume.ats_score %}
+                <span class="badge bg-success">{{ resume.ats_score }}%</span>
+                {% else %}
+                <span class="badge bg-secondary">Pending</span>
+                {% endif %}
+              </td>
+              <td>
+                {% if resume.ats_score %}
+                <span class="badge bg-info">Analyzed</span>
+                {% else %}
+                <span class="badge bg-warning">Analyzing...</span>
+                {% endif %}
+              </td>
+              <td>
+                <a
+                  href="{% url 'resume_feedback' resume.id %}"
+                  class="btn btn-sm btn-outline-primary"
+                >
+                  <i class="fas fa-eye me-1"></i>
+                  View
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="card border-0 bg-light">
+        <div class="card-body text-center py-5">
+          <div class="display-3 text-muted mb-3">
+            <i class="fas fa-inbox"></i>
+          </div>
+          <h5 class="text-muted">No resumes uploaded yet</h5>
+          <p class="text-muted mb-3">
+            Start by uploading your resume for AI-powered analysis.
+          </p>
+          <a href="{% url 'upload_resume' %}" class="btn btn-primary">
+            <i class="fas fa-cloud-upload-alt me-2"></i>
+            Upload Your First Resume
+          </a>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Recent Interviews Section -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <h3 class="fw-bold mb-4">
+        <i class="fas fa-comments me-2 text-success"></i>
+        Recent Interview Sessions
+      </h3>
+
+      {% if recent_interviews %}
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>Role</th>
+              <th>Type</th>
+              <th>Difficulty</th>
+              <th>Score</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for interview in recent_interviews %}
+            <tr>
+              <td>{{ interview.get_role_display }}</td>
+              <td>{{ interview.get_interview_type_display }}</td>
+              <td>{{ interview.get_difficulty_display }}</td>
+              <td>
+                {% if interview.overall_score %}
+                <span class="badge bg-success"
+                  >{{ interview.overall_score }}%</span
+                >
+                {% else %}
+                <span class="badge bg-secondary">Pending</span>
+                {% endif %}
+              </td>
+              <td>
+                <small class="text-muted">
+                  {{ interview.created_at|date:"M d, Y H:i" }}
+                </small>
+              </td>
+              <td>
+                <a
+                  href="{% url 'interview_feedback' interview.id %}"
+                  class="btn btn-sm btn-outline-success"
+                >
+                  <i class="fas fa-eye me-1"></i>
+                  View
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="card border-0 bg-light">
+        <div class="card-body text-center py-5">
+          <div class="display-3 text-muted mb-3">
+            <i class="fas fa-comments"></i>
+          </div>
+          <h5 class="text-muted">No interviews completed yet</h5>
+          <p class="text-muted mb-3">
+            Start a mock interview to begin tracking your performance.
+          </p>
+          <a href="{% url 'start_interview' %}" class="btn btn-success">
+            <i class="fas fa-play me-2"></i>
+            Start Interview
+          </a>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Quick Start Guide -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <h3 class="fw-bold mb-4">
+        <i class="fas fa-lightbulb me-2 text-warning"></i>
+        Quick Start Guide
+      </h3>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="text-primary display-6 mb-3">
+            <i class="fas fa-1"></i>
+          </div>
+          <h5 class="card-title fw-bold">Upload Resume</h5>
+          <p class="card-text text-muted">
+            Upload your PDF resume to get started with AI analysis.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="text-success display-6 mb-3">
+            <i class="fas fa-2"></i>
+          </div>
+          <h5 class="card-title fw-bold">Get Analysis</h5>
+          <p class="card-text text-muted">
+            Receive detailed ATS score and AI-generated feedback.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <div class="text-info display-6 mb-3">
+            <i class="fas fa-3"></i>
+          </div>
+          <h5 class="card-title fw-bold">Practice Interviews</h5>
+          <p class="card-text text-muted">
+            Practice mock interviews and receive AI feedback.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

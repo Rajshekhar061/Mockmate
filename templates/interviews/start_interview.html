@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}
+Start Mock Interview - CareerAI
+{% endblock %}
+
+{% block content %}
+
+<div class="container-lg py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-5">
+          <h1 class="h3 fw-bold mb-3">Start Mock Interview</h1>
+
+          <p class="text-muted mb-4">
+            Select a role, difficulty level, and interview type to generate
+            AI-powered questions tailored to your practice session.
+          </p>
+
+          <form method="post" novalidate>
+            {% csrf_token %}
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="form-label" for="id_role">Role</label>
+                {{ form.role }}
+              </div>
+              <div class="col-md-4">
+                <label class="form-label" for="id_difficulty">Difficulty</label>
+                {{ form.difficulty }}
+              </div>
+              <div class="col-md-4">
+                <label class="form-label" for="id_interview_type"
+                  >Interview Type</label
+                >
+                {{ form.interview_type }}
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <button type="submit" class="btn btn-primary btn-lg">
+                <i class="fas fa-play-circle me-2"></i>
+                Start Interview
+              </button>
+              <a
+                href="{% url 'dashboard' %}"
+                class="btn btn-outline-secondary ms-2"
+                >Cancel</a
+              >
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

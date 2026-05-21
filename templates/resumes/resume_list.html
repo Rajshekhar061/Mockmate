@@ -1,0 +1,133 @@
+{% extends "base.html" %} {% block title %}My Resumes - CareerAI{% endblock %}
+{% block content %}
+<div class="container-lg py-5">
+  <div class="row mb-5">
+    <div class="col-lg-8">
+      <h1 class="display-6 fw-bold mb-2">
+        <i class="fas fa-file-pdf me-3 text-danger"></i>
+        My Resumes
+      </h1>
+      <p class="text-muted lead">View and manage all your analyzed resumes</p>
+    </div>
+    <div class="col-lg-4 d-flex align-items-center justify-content-end">
+      <a href="{% url 'upload_resume' %}" class="btn btn-primary btn-lg">
+        <i class="fas fa-cloud-upload-alt me-2"></i>
+        Upload Resume
+      </a>
+    </div>
+  </div>
+
+  {% if resumes %}
+  <div class="row">
+    {% for resume in resumes %}
+    <div class="col-md-6 mb-4">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <h5 class="card-title fw-bold truncate">
+              <i class="fas fa-file-pdf text-danger me-2"></i>
+              {{ resume.original_filename|truncatechars:40 }}
+            </h5>
+            {% if resume.ats_score %}
+            <span class="badge bg-success" style="font-size: 0.9rem">
+              {{ resume.ats_score }}%
+            </span>
+            {% elif resume.status == 'failed' %}
+            <span class="badge bg-danger">Failed</span>
+            {% else %}
+            <span class="badge bg-warning">Processing</span>
+            {% endif %}
+          </div>
+
+          <p class="text-muted small mb-3">
+            <i class="fas fa-calendar me-1"></i>
+            {{ resume.created_at|date:"M d, Y H:i" }}
+          </p>
+
+          {% if resume.is_analyzed %}
+          <div class="mb-3">
+            <small class="text-muted">ATS Score</small>
+            <div class="progress" style="height: 6px">
+              <div
+                class="progress-bar"
+                role="progressbar"
+                style="width: {{ resume.ats_score }}%"
+                aria-valuenow="{{ resume.ats_score }}"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+            </div>
+          </div>
+
+          <div class="row text-center small mb-3">
+            <div class="col-4">
+              <div class="text-success">{{ resume.strengths|length }}</div>
+              <small class="text-muted">Strengths</small>
+            </div>
+            <div class="col-4">
+              <div class="text-danger">{{ resume.weaknesses|length }}</div>
+              <small class="text-muted">Weaknesses</small>
+            </div>
+            <div class="col-4">
+              <div class="text-warning">{{ resume.suggestions|length }}</div>
+              <small class="text-muted">Suggestions</small>
+            </div>
+          </div>
+          {% endif %}
+
+          <div class="btn-group w-100" role="group">
+            <a
+              href="{% url 'resume_feedback' resume.id %}"
+              class="btn btn-sm btn-outline-primary flex-grow-1"
+            >
+              <i class="fas fa-eye me-1"></i>
+              View
+            </a>
+            <form
+              method="POST"
+              action="{% url 'delete_resume' resume.id %}"
+              style="flex-grow: 1"
+              onsubmit="
+                return confirm('Are you sure you want to delete this resume?');
+              "
+            >
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-outline-danger w-100">
+                <i class="fas fa-trash-alt me-1"></i>
+                Delete
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="card border-0 bg-light">
+    <div class="card-body text-center py-5">
+      <div class="display-3 text-muted mb-3">
+        <i class="fas fa-inbox"></i>
+      </div>
+      <h5 class="text-muted">No resumes uploaded yet</h5>
+      <p class="text-muted mb-3">
+        Start by uploading your first resume for AI-powered analysis.
+      </p>
+      <a href="{% url 'upload_resume' %}" class="btn btn-primary">
+        <i class="fas fa-cloud-upload-alt me-2"></i>
+        Upload Your First Resume
+      </a>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+<style>
+  .truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+  }
+</style>
+{% endblock %}

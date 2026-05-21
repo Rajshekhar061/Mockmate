@@ -1,0 +1,282 @@
+{% extends "base.html" %} {% block title %}Home - CareerAI: AI Interview
+Preparation{% endblock %} {% block content %}
+<!-- Hero Section -->
+<div class="hero-section mb-5">
+  <div class="container-lg">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <h1>
+          <i class="fas fa-graduation-cap me-3"></i>
+          Ace Your Interviews with AI
+        </h1>
+        <p>
+          Get AI-powered resume analysis, mock interviews, and personalized
+          feedback from our advanced LLM technology.
+        </p>
+        <div class="mt-4">
+          {% if user.is_authenticated %}
+          <a href="{% url 'upload_resume' %}" class="btn btn-light btn-lg me-3">
+            <i class="fas fa-cloud-upload-alt me-2"></i>
+            Upload Resume
+          </a>
+          <a href="{% url 'dashboard' %}" class="btn btn-outline-light btn-lg">
+            <i class="fas fa-tachometer-alt me-2"></i>
+            Dashboard
+          </a>
+          {% else %}
+          <a href="{% url 'register' %}" class="btn btn-light btn-lg me-3">
+            <i class="fas fa-user-plus me-2"></i>
+            Get Started
+          </a>
+          <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg">
+            <i class="fas fa-sign-in-alt me-2"></i>
+            Sign In
+          </a>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="text-center">
+          <div style="font-size: 8rem; opacity: 0.3">
+            <i class="fas fa-brain"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Features Section -->
+<div class="container-lg mb-5">
+  <div class="text-center mb-5">
+    <h2 class="display-6 fw-bold mb-3">
+      Powerful Features to Boost Your Success
+    </h2>
+    <p class="text-muted lead">
+      Everything you need to prepare for your dream job
+    </p>
+  </div>
+
+  <div class="row">
+    <!-- Resume Analysis -->
+    <div class="col-md-4 mb-4">
+      <div class="card border-0 shadow h-100">
+        <div class="card-body text-center p-5">
+          <div class="display-4 text-primary mb-3">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h5 class="fw-bold mb-3">Resume Analysis</h5>
+          <p class="text-muted mb-4">
+            Get instant AI-powered analysis of your resume with ATS scores,
+            strengths, weaknesses, and actionable suggestions.
+          </p>
+          <ul class="list-unstyled text-start">
+            <li class="mb-2">
+              <i class="fas fa-check text-success me-2"></i>
+              <small>ATS Score Analysis</small>
+            </li>
+            <li class="mb-2">
+              <i class="fas fa-check text-success me-2"></i>
+              <small>Keyword Optimization</small>
+            </li>
+            <li class="mb-2">
+              <i class="fas fa-check text-success me-2"></i>
+              <small>Formatting Tips</small>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mock Interviews -->
+    <div class="col-md-4 mb-4">
+      <div class="card border-0 shadow h-100">
+        <div class="card-body text-center p-5">
+          <div class="display-4 text-success mb-3">
+            <i class="fas fa-microphone"></i>
+          </div>
+          <h5 class="fw-bold mb-3">Mock Interviews</h5>
+          <p class="text-muted mb-4">
+            Practice with AI-generated interview questions tailored to your
+            resume and target position.
+          </p>
+          <ul class="list-unstyled text-start">
+            <li class="mb-2">
+              <i class="fas fa-check text-success me-2"></i>
+              <small>Behavioral Questions</small>
+            </li>
+            <li class="mb-2">
+              <i class="fas fa-check text-success me-2"></i>
+              <small>Technical Questions</small>
+            </li>
+            <li class="mb-2">
+              <i class="fas fa-check text-success me-2"></i>
+              <small>Real-time Feedback</small>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Feedback -->
+    <div class="col-md-4 mb-4">
+      <div class="card border-0 shadow h-100">
+        <div class="card-body text-center p-5">
+          <div class="display-4 text-info mb-3">
+            <i class="fas fa-brain"></i>
+          </div>
+          <h5 class="fw-bold mb-3">AI Feedback</h5>
+          <p class="text-muted mb-4">
+            Get intelligent, personalized feedback using advanced AI models
+            powered by Groq API.
+          </p>
+          <ul class="list-unstyled text-start">
+            <li class="mb-2">
+              <i class="fas fa-check text-success me-2"></i>
+              <small>Instant Analysis</small>
+            </li>
+            <li class="mb-2">
+              <i class="fas fa-check text-success me-2"></i>
+              <small>Personalized Tips</small>
+            </li>
+            <li class="mb-2">
+              <i class="fas fa-check text-success me-2"></i>
+              <small>Progress Tracking</small>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- How It Works -->
+<div class="bg-light py-5 mb-5">
+  <div class="container-lg">
+    <div class="text-center mb-5">
+      <h2 class="display-6 fw-bold mb-3">How CareerAI Works</h2>
+      <p class="text-muted lead">Get started in 3 simple steps</p>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="text-center">
+          <div class="display-1 fw-bold text-primary mb-3" style="opacity: 0.2">
+            1
+          </div>
+          <h5 class="fw-bold mb-3">Upload Your Resume</h5>
+          <p class="text-muted">
+            Upload your PDF resume in seconds. Our system extracts and analyzes
+            every detail.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="text-center">
+          <div class="display-1 fw-bold text-success mb-3" style="opacity: 0.2">
+            2
+          </div>
+          <h5 class="fw-bold mb-3">Get AI Analysis</h5>
+          <p class="text-muted">
+            Receive comprehensive ATS scores, strengths, weaknesses, and
+            targeted recommendations.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="text-center">
+          <div class="display-1 fw-bold text-info mb-3" style="opacity: 0.2">
+            3
+          </div>
+          <h5 class="fw-bold mb-3">Improve & Practice</h5>
+          <p class="text-muted">
+            Follow suggestions, practice with mock interviews, and track your
+            progress.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Testimonials/Stats -->
+<div class="container-lg mb-5">
+  <div class="row">
+    <div class="col-md-3 text-center mb-4">
+      <div class="display-4 fw-bold text-primary mb-2">1000+</div>
+      <p class="text-muted">Resumes Analyzed</p>
+    </div>
+    <div class="col-md-3 text-center mb-4">
+      <div class="display-4 fw-bold text-success mb-2">500+</div>
+      <p class="text-muted">Users Helped</p>
+    </div>
+    <div class="col-md-3 text-center mb-4">
+      <div class="display-4 fw-bold text-info mb-2">95%</div>
+      <p class="text-muted">Success Rate</p>
+    </div>
+    <div class="col-md-3 text-center mb-4">
+      <div class="display-4 fw-bold text-warning mb-2">24/7</div>
+      <p class="text-muted">Always Available</p>
+    </div>
+  </div>
+</div>
+
+<!-- Technology -->
+<div class="bg-dark text-white py-5 mb-5">
+  <div class="container-lg">
+    <div class="text-center mb-5">
+      <h2 class="display-6 fw-bold mb-3">Powered by Advanced Technology</h2>
+      <p class="lead">Built with cutting-edge AI and modern web technologies</p>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 text-center mb-4">
+        <h6 class="fw-bold mb-2">
+          <i class="fas fa-brain me-2 text-primary"></i>
+          Groq AI
+        </h6>
+        <p class="text-muted small">
+          Advanced language model for intelligent analysis
+        </p>
+      </div>
+      <div class="col-md-4 text-center mb-4">
+        <h6 class="fw-bold mb-2">
+          <i class="fas fa-database me-2 text-success"></i>
+          PostgreSQL
+        </h6>
+        <p class="text-muted small">
+          Secure and scalable database infrastructure
+        </p>
+      </div>
+      <div class="col-md-4 text-center mb-4">
+        <h6 class="fw-bold mb-2">
+          <i class="fas fa-code me-2 text-info"></i>
+          Django
+        </h6>
+        <p class="text-muted small">Robust Python web framework</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA Section -->
+<div class="container-lg text-center py-5">
+  <h2 class="display-5 fw-bold mb-4">Ready to Land Your Dream Job?</h2>
+  <p class="lead text-muted mb-4">Start your journey with CareerAI today.</p>
+  {% if user.is_authenticated %}
+  <a href="{% url 'upload_resume' %}" class="btn btn-primary btn-lg">
+    <i class="fas fa-cloud-upload-alt me-2"></i>
+    Upload Resume Now
+  </a>
+  {% else %}
+  <a href="{% url 'register' %}" class="btn btn-primary btn-lg me-3">
+    <i class="fas fa-user-plus me-2"></i>
+    Create Free Account
+  </a>
+  <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg">
+    <i class="fas fa-sign-in-alt me-2"></i>
+    Sign In
+  </a>
+  {% endif %}
+</div>
+{% endblock %}

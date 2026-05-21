@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - CareerAI{% endblock %}
+
+{% block content %}
+
+<div class="container-lg py-5">
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">
+            <i class="fas fa-user-circle me-2"></i>
+            My Profile
+          </h4>
+        </div>
+        <div class="card-body">
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <h6 class="text-muted">First Name</h6>
+              <p class="lead">{{ user.first_name|default:"Not set" }}</p>
+            </div>
+            <div class="col-md-6">
+              <h6 class="text-muted">Last Name</h6>
+              <p class="lead">{{ user.last_name|default:"Not set" }}</p>
+            </div>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <h6 class="text-muted">Username</h6>
+              <p class="lead">{{ user.username }}</p>
+            </div>
+            <div class="col-md-6">
+              <h6 class="text-muted">Email</h6>
+              <p class="lead">{{ user.email }}</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <h6 class="text-muted">Member Since</h6>
+              <p class="lead">{{ user.date_joined|date:"M d, Y" }}</p>
+            </div>
+            <div class="col-md-6">
+              <h6 class="text-muted">Last Login</h6>
+              <p class="lead">
+                {% if user.last_login %} {{ user.last_login|date:"M d, Y H:i" }}
+                {% else %} Never {% endif %}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card border-0 shadow mt-4">
+        <div class="card-header bg-info text-white">
+          <h4 class="mb-0">
+            <i class="fas fa-tools me-2"></i>
+            Account Settings
+          </h4>
+        </div>
+        <div class="card-body">
+          <button
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#editProfileModal"
+          >
+            <i class="fas fa-edit me-2"></i>
+            Edit Profile
+          </button>
+          <button
+            class="btn btn-warning"
+            data-bs-toggle="modal"
+            data-bs-target="#changePasswordModal"
+          >
+            <i class="fas fa-key me-2"></i>
+            Change Password
+          </button>
+         <form method="post" action="{% url 'logout' %}" style="display:inline;">
+  {% csrf_token %}
+  <button
+    type="submit"
+    class="btn btn-danger"
+    onclick="return confirm('Are you sure you want to logout?');"
+  >
+    <i class="fas fa-sign-out-alt me-2"></i>
+    Logout
+  </button>
+</form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card border-0 shadow">
+        <div class="card-header bg-success text-white">
+          <h4 class="mb-0">
+            <i class="fas fa-info-circle me-2"></i>
+            Account Status
+          </h4>
+        </div>
+        <div class="card-body text-center">
+          <div class="display-1 text-success mb-3">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h5 class="fw-bold">Active Account</h5>
+          <p class="text-muted">Your account is in good standing.</p>
+          <hr />
+          <small class="text-muted">
+            Explore our features to ace your interviews.
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div
+  class="modal fade"
+  id="editProfileModal"
+  tabindex="-1"
+  aria-labelledby="editProfileModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted">
+          Feature coming soon. Contact support for profile updates.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Change Password Modal -->
+<div
+  class="modal fade"
+  id="changePasswordModal"
+  tabindex="-1"
+  aria-labelledby="changePasswordModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="changePasswordModalLabel">
+          Change Password
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted">
+          Feature coming soon. Use Django admin or contact support.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
