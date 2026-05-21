@@ -50,15 +50,12 @@ Interview Question - CareerAI
             {% csrf_token %}
 
             <div class="mb-4">
-              <label class="form-label fw-semibold">
-                Your Answer
-              </label>
+  <label class="form-label fw-semibold">
+    Your Answer
+  </label>
 
-              <div class="mb-4">
-  <label class="form-label fw-semibold">Your Answer</label>
   {{ form.user_answer }}
 </div>
-            </div>
 
             <button type="submit" class="btn btn-success btn-lg">
               {% if progress.current >= progress.total %}

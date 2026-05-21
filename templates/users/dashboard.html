@@ -64,9 +64,12 @@ Dashboard - CareerAI
           </div>
           <h6 class="card-title text-muted">Avg. Interview Score</h6>
           <p class="display-5 fw-bold">
-            {% if interview_count > 0 %}{{ average_interview_score }}%{% else
-            %}-{% endif %}
-          </p>
+  {% if interview_count > 0 %}
+    {{ average_interview_score }}%
+  {% else %}
+    -
+  {% endif %}
+</p>
         </div>
       </div>
     </div>
