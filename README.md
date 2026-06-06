@@ -1,30 +1,30 @@
-MockMate AI 🚀
-AI-Powered Interview Preparation & Resume Analysis Platform
+🚀 MockMate AI
+AI-Powered Interview Preparation & Resume Intelligence Platform
 
-MockMate AI is a production-quality AI-powered career preparation platform built using Django and Groq AI.
-It helps students and job seekers improve resumes, practice interviews, and track performance using intelligent analytics.
+MockMate AI is a production-ready, AI-driven career preparation platform built with Django and Groq AI (Llama 3.3 70B).
+It helps students and job seekers optimize resumes, practice interviews, and track performance through intelligent analytics and feedback systems.
 
-✨ Features
+✨ Key Features
 🤖 AI Mock Interviews
-AI-generated technical & HR interview questions
-Personalized interview feedback
-Interview performance tracking
-Real-time evaluation system
+AI-generated technical and HR interview questions
+Personalized, context-aware feedback
+Real-time evaluation of responses
+Interview performance tracking over time
 📄 AI Resume Analyzer
-Upload PDF resumes
-ATS score generation (0–100)
-Resume strengths & weaknesses detection
+Upload and analyze PDF resumes
+ATS compatibility scoring (0–100)
+Identification of strengths and weaknesses
 Keyword optimization suggestions
-Formatting quality analysis
+Resume structure and formatting evaluation
 📊 Analytics Dashboard
-Track interview performance
-Identify weak topics
+Track interview performance history
+Identify weak technical and behavioral areas
 Personalized improvement roadmap
-Practice recommendations
+Smart practice recommendations powered by AI insights
 🔐 Authentication System
-User registration & login
-Secure profile management
-Resume & interview history tracking
+Secure user registration and login
+Profile management
+Persistent storage of resumes and interview history
 🛠️ Tech Stack
 Backend
 Python
@@ -34,8 +34,8 @@ Groq API
 Llama 3.3 70B Versatile
 Prompt Engineering
 Frontend
-HTML
-CSS
+HTML5
+CSS3
 Bootstrap 5
 JavaScript
 Database
@@ -43,142 +43,123 @@ SQLite (Development)
 PostgreSQL (Production Ready)
 Additional Tools
 Django REST Framework
-pdfplumber
+pdfplumber (PDF parsing)
 Git & GitHub
-📂 Project Structure
+📂 Project Architecture
 MockMate/
 │
-├── ai_engine/          # AI services & prompts
-├── analytics/          # Performance analytics
-├── interviews/         # Mock interview system
-├── resumes/            # Resume analysis module
-├── users/              # Authentication system
-├── templates/          # HTML templates
-├── static/             # Static assets
-├── media/              # Uploaded files
+├── ai_engine/        # AI logic, prompts & inference layer
+├── analytics/        # Performance tracking & insights
+├── interviews/       # Mock interview system
+├── resumes/          # Resume parsing & ATS analysis
+├── users/            # Authentication & profiles
+├── templates/        # Frontend HTML templates
+├── static/           # CSS, JS, assets
+├── media/            # Uploaded resumes & files
 ├── manage.py
 ├── requirements.txt
 └── README.md
-🚀 Installation
+🚀 Setup Instructions
 1️⃣ Clone Repository
 git clone https://github.com/Rajshekhar061/Mockmate.git
 cd Mockmate
 2️⃣ Create Virtual Environment
 python -m venv venv
-Windows
-venv\Scripts\activate
-Linux/Mac
-source venv/bin/activate
+
+Activate:
+
+Windows: venv\Scripts\activate
+Linux/Mac: source venv/bin/activate
 3️⃣ Install Dependencies
 pip install -r requirements.txt
-4️⃣ Configure Environment Variables
+4️⃣ Environment Variables
 
-Create .env file:
+Create a .env file:
 
 GROQ_API_KEY=your_api_key_here
 SECRET_KEY=your_secret_key
 DEBUG=True
 5️⃣ Run Migrations
 python manage.py migrate
-6️⃣ Start Development Server
+6️⃣ Start Server
 python manage.py runserver
 
-Visit:
+Open:
 
-http://127.0.0.1:8000/
-📸 Screenshots
-Dashboard
-
-Resume Analysis
-
-Mock Interview
-
-Analytics
-
+https://mockmate-v7if.onrender.com/
 🧠 AI Workflow
-User Uploads Resume
-        ↓
-PDF Text Extraction
-        ↓
-Groq AI Analysis
-        ↓
-ATS Score + Feedback
-        ↓
-Analytics & Recommendations
-📊 Sample Resume Analysis Output
+Resume Upload
+      ↓
+PDF Text Extraction (pdfplumber)
+      ↓
+Groq LLM Processing
+      ↓
+ATS Scoring + Feedback Generation
+      ↓
+Analytics + Personalized Recommendations
+📊 Sample AI Output
 {
   "ats_score": 85,
   "strengths": [
     "Strong technical skills section",
-    "Well-structured resume"
+    "Well-structured resume format"
   ],
   "weaknesses": [
-    "Missing quantifiable achievements"
+    "Lacks quantifiable achievements"
   ],
   "suggestions": [
-    "Add metrics and measurable impact"
+    "Add measurable impact using metrics"
   ]
 }
-🔒 Security Features
-Environment variable protection
+🔒 Security Highlights
+Environment variable-based configuration
+CSRF protection enabled
 Secure authentication system
-CSRF protection
 File upload validation
-Error handling & logging
-🚀 Future Improvements
+Structured error handling and logging
+🚀 Future Enhancements
 🎤 Voice-based AI interviews
-📹 Webcam confidence analysis
-💻 Coding interview rounds
-⚛️ React frontend
-🐳 Docker deployment
+📹 Webcam-based confidence analysis
+💻 Coding interview simulation
+⚛️ React frontend migration
+🐳 Docker containerization
 ☁️ AWS/GCP deployment
-📧 Email notifications
-📈 Advanced analytics
+📧 Email notifications system
+📈 Advanced ML-driven analytics
 💡 Skills Demonstrated
-Django Backend Development
-AI API Integration
-Prompt Engineering
-Authentication Systems
-File Upload Handling
-PDF Processing
-Database Design
-Analytics Dashboard
-REST APIs
-Git & GitHub
+Django backend development
+AI integration with LLMs
+Prompt engineering
+REST API design
+Authentication & security systems
+PDF parsing & file handling
+Analytics system design
+Database modeling
+Full-stack project architecture
+Git & deployment workflows
 📈 Learning Outcomes
-
-This project helped in learning:
-
-Full-stack Django development
-AI-powered application workflows
-Resume parsing systems
-Analytics & recommendation systems
-Production-ready project structure
-Git & GitHub workflows
-🤝 Contributing
-Fork the repository
-Create a feature branch
-Commit your changes
-Push to the branch
-Open a Pull Request
+Built a full-stack AI-powered SaaS-style application
+Learned real-world LLM integration patterns
+Designed scalable Django project architecture
+Implemented resume parsing + ATS logic
+Developed analytics-driven feedback systems
 👨‍💻 Author
 
 Rajshekhar Singh
 
-GitHub:
-Rajshekhar061 GitHub Profile
+GitHub: Rajshekhar061
 
 ⭐ Support
 
 If you like this project:
 
-Star the repository
-Fork the project
-Share feedback
+⭐ Star the repository
+🍴 Fork it
+💬 Share feedback
 📜 License
 
 This project is licensed under the MIT License.
 
-🌟 Project Vision
+🌟 Vision
 
-MockMate AI aims to become a complete AI-powered career preparation platform that helps students prepare smarter, improve faster, and perform confidently in real interviews.
+MockMate AI aims to become a complete AI-powered career acceleration platform, helping candidates prepare smarter, improve continuously, and perform confidently in real interviews.
