@@ -140,6 +140,9 @@ Git & deployment workflows
 
 Screenshots-
 https://github.com/Rajshekhar061/Mockmate/blob/main/screenshots/homepage.png
+https://github.com/Rajshekhar061/Mockmate/blob/main/screenshots/features.png
+https://github.com/Rajshekhar061/Mockmate/blob/main/screenshots/analytics.png
+https://github.com/Rajshekhar061/Mockmate/blob/main/screenshots/Interview.png
 
 📈 Learning Outcomes
 Built a full-stack AI-powered SaaS-style application
