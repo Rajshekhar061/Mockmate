@@ -137,6 +137,10 @@ Analytics system design
 Database modeling
 Full-stack project architecture
 Git & deployment workflows
+
+Screenshots-
+https://github.com/Rajshekhar061/Mockmate/blob/main/screenshots/homepage.png
+
 📈 Learning Outcomes
 Built a full-stack AI-powered SaaS-style application
 Learned real-world LLM integration patterns
